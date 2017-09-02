@@ -8,4 +8,8 @@ Right now, all it does is list the HID devices attached to the current machine.
 
 ## To Build
 
-You'll need all the tools one would need to develop on an Electron app. See the `Boilerplate-README.md` to see the original notes about how to get this thing running.
+You'll need all the tools one would need to develop on an Electron app.
+
+This project was initially built off of the `electron-react-boilerplate` found here: [https://github.com/chentsulin/electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate)
+
+See the `Boilerplate-README.md` to see the original notes about how to get this thing running.
