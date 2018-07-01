@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 //import './App.css';
 
 // Known vendor IDs for ZealPC keyboards:
-const knownDevices = []
+const knownVendorIDs = [0xfeed]
 // Configure which USB interface and endpoint to use:
 let keyboardInterface = 1
 let keyboardEndpoint = 1
@@ -11,14 +11,12 @@ let keyboardEndpoint = 1
 class App extends Component {
   constructor(props) {
     super(props)
-    this.allowUSBDevice() = this.allowUSBDevice.bind(this)
+    this.allowUSBDevice = this.allowUSBDevice.bind(this)
   }
-
-
 
   allowUSBDevice() {
     // Build a filter to only select some of the currently connected USB devices:
-    const filters = knownDevices.map(vendorId => ({ vendorId }))
+    const filters = knownVendorIDs.map(vendorId => ({ vendorId }))
 
     // Tell the browser to ask the User for access to the available devices:
     navigator.usb.requestDevice({ filters })
