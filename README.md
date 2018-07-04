@@ -16,7 +16,7 @@ This is a work in progress. The latest version can be viewed here:
 Because the OS binds HID devices to a kernel driver, you'll need to manually unbind it to get WebUSB to be able to bind
 to the keyboard USB interface.
 
-Note to ZealPC Developers: The correct way to handle this is for the USB device descriptors to be correctly defined for
+Note to QMK/ZealPC Developers: The correct way to handle this is for the USB device descriptors to be correctly defined for
 WebUSB access as described at the following link. This would be amazing!
 [https://wicg.github.io/webusb/#webusb-platform-capability-descriptor](https://wicg.github.io/webusb/#webusb-platform-capability-descriptor)
 
