@@ -7,6 +7,11 @@ using a custom HID USB endpoint and should support WebUSB.
 
 ## Status
 
+**As of 2018-07-04** - Enough of the USB endpoint communcation has been implemented to correctly fetch the current
+Protocol Version from the Zeal60 keyboard. This proves that WebUSB can be used to directly interact with the keyboard
+(given that the user is using Chrome 65 on Linux, and has manually unbound the keyboard from the Kernel as described 
+below). 
+
 This is a work in progress. The latest version can be viewed here:
 [https://jameshagerman.github.io/ZealMod/](https://jameshagerman.github.io/ZealMod/)
 
