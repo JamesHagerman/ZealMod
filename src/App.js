@@ -14,7 +14,8 @@ class App extends Component {
     super(props)
     this.state = {
       currentDevice: null,
-      interfaceClaimed: false
+      interfaceClaimed: false,
+      protocolVersion: 'na'
     }
     this.allowUSBDevice = this.allowUSBDevice.bind(this)
     this.openDevice = this.openDevice.bind(this)
@@ -110,8 +111,10 @@ class App extends Component {
       console.log('Request sent, WebUSB API said:', inResponse)
 
       // Now parse the version out of the response:
-      console.log('Protocol version:', inResponse.data.getInt8(1)) // get the second byte! (0th is command!)
+      let protocolVersion = inResponse.data.getInt8(1) // get the second byte! (0th is command!)
+      console.log('Protocol version:', protocolVersion)
 
+      this.setState({ protocolVersion })
     }
     catch (err) {
       console.error('sendCommand: Failed:', err)
@@ -124,28 +127,32 @@ class App extends Component {
       <div className="App">
         <p className="App-intro">
           ZealMod is a web based configuration tool for the ZealPC mechanical keyboards. It is a work in progress.
-          Currently, this site should be able to grab the current Protocol Version from the Zeal60 Keyboard using
-          Chrome 65 under Linux.
-        </p>
-        <p>
-          The code and manual unbind instructions can be found here:
-          <a href="https://github.com/JamesHagerman/ZealMod">https://github.com/JamesHagerman/ZealMod</a>
         </p>
         <p>
           The goal of this project is to use WebUSB to send new keymaps to the keyboard via raw HID messages.
         </p>
         <p>
+          Currently, this site should be able to grab the current Protocol Version from the Zeal60 Keyboard using
+          Chrome 65 under Linux. The code can be found here:
+          <a href="https://github.com/JamesHagerman/ZealMod"> https://github.com/JamesHagerman/ZealMod</a>
+        </p>
+        <p>
           Note: Because the OS often tries to grab the raw HID access on the keyboard, you will have to unbind the 
-          correct device from the kernel driver. Do that using:
+          correct device from the kernel driver. Do that using the following. (More details on this issue can be found 
+          in the GitHub repo's READEME file):
         </p>
         <pre>sudo su</pre>
         <pre>echo -n 2-1.2:1.1 | tee -a /sys/bus/usb/drivers/usbhid/unbind</pre>
-        <p>
-          Or something like that...
-        </p>
-        <button onClick={this.allowUSBDevice}>Connect to keyboard</button>
-        <button onClick={this.openDevice}>Open Keyboard</button>
-        <button onClick={this.sendCommand}>Send Command</button>
+        
+        <div>
+          Example: Connecting and getting the current Protocol Version:
+          <div>
+            <button onClick={this.allowUSBDevice}>Connect to keyboard</button>
+            <button onClick={this.openDevice}>Open Keyboard</button>
+            <button onClick={this.sendCommand}>Send Command</button>
+          </div>
+          Current protocol version: {this.state.protocolVersion}
+        </div>
       </div>
     );
   }
