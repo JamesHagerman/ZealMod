@@ -11,7 +11,42 @@ let keyboardEndpoint = 1
 class App extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      currentDevice: null,
+      interfaceClaimed: false
+    }
     this.allowUSBDevice = this.allowUSBDevice.bind(this)
+    this.openDevice = this.openDevice.bind(this)
+  }
+
+  async openDevice() {
+    let device = this.state.currentDevice
+    console.log(`Trying to open ${device.manufacturerName.trim()} - ${device.productName.trim()}...`)
+    
+    try {
+      await device.open()
+      if (device.configuration === null) {
+        await device.selectConfiguration(1)
+      }
+      console.log('Good, configuration selected...')
+
+      await device.claimInterface(keyboardInterface)
+      console.log('claim good')
+
+      this.setState({ interfaceClaimed: true })
+
+      await device.controlTransferOut({
+        requestType: 'class',
+        recipient: 'interface',
+        request: 0x22,
+        value: 0x01,
+        index: keyboardInterface
+      })
+
+    }
+    catch (err) {
+      console.log('Oops:', err)
+    }
   }
 
   allowUSBDevice() {
@@ -23,7 +58,7 @@ class App extends Component {
       .then(device => {
         // Note: Device Objects returned from the WebUSB APIs do not play nice with JSON.stringify()
         console.log(`Newly allowed USB device:`, device)
-        //this.updateDeviceList()
+        this.setState({ currentDevice: device })
       })
       .catch(err => {
         console.log(err)
@@ -39,7 +74,17 @@ class App extends Component {
         <p>
           The goal of this project is to use WebUSB to send new keymaps to the keyboard via raw HID messages.
         </p>
+        <p>
+          Note: Because the OS often tries to grab the raw HID access on the keyboard, you will have to unbind the 
+          correct device from the kernel driver. Do that using:
+        </p>
+        <pre>sudo su</pre>
+        <pre>echo -n 2-1.2:1.1 | tee -a /sys/bus/usb/drivers/usbhid/unbind</pre>
+        <p>
+          Or something like that...
+        </p>
         <button onClick={this.allowUSBDevice}>Connect to keyboard</button>
+        <button onClick={this.openDevice}>Open Keyboard</button>
       </div>
     );
   }
