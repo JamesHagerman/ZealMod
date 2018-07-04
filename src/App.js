@@ -123,7 +123,13 @@ class App extends Component {
     return (
       <div className="App">
         <p className="App-intro">
-          ZealMod is a web based configuration tool for the ZealPC mechanical keyboards. It is a work in progress...
+          ZealMod is a web based configuration tool for the ZealPC mechanical keyboards. It is a work in progress.
+          Currently, this site should be able to grab the current Protocol Version from the Zeal60 Keyboard using
+          Chrome 65 under Linux.
+        </p>
+        <p>
+          The code and manual unbind instructions can be found here:
+          <a href="https://github.com/JamesHagerman/ZealMod">https://github.com/JamesHagerman/ZealMod</a>
         </p>
         <p>
           The goal of this project is to use WebUSB to send new keymaps to the keyboard via raw HID messages.
